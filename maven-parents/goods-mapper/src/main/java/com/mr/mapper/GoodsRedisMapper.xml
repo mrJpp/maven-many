@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mr.mapper.GoodsRedisMapper" >
+  <resultMap id="BaseResultMap" type="com.mr.entity.GoodsRedis" >
+    <id column="goods_id" property="goodsId" jdbcType="INTEGER" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="goods_price" property="goodsPrice" jdbcType="INTEGER" />
+    <result column="goods_count" property="goodsCount" jdbcType="INTEGER" />
+    <result column="goods_date" property="goodsDate" jdbcType="DATE" />
+    <result column="goods_type_id" property="goodsTypeId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    goods_id, goods_name, goods_price, goods_count, goods_date, goods_type_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from goods_redis
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 查询总条数 -->
+  <select id="queryGoodsCounts"   resultType="java.lang.Integer">
+  	select count(*)  from goods_redis
+  </select>
+  
+  <!-- 分页查询数据 -->
+  <select id="queryGoodsList"  resultMap="BaseResultMap">
+  	select 
+    	goods_id
+    from goods_redis  limit ${start},${pageItem}
+  </select>
+  
+  <!--删除-->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from goods_redis
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </delete>
+  <!-- useGeneratedKeys设置是否使用JDBC的getGenereatedKeys方法获取主键并赋值到
+  keyProperty设置的领域模型属性中。
+  （适用于mysql、sqlserver数据库，oracle不能使用，使用selectkey子节点做） 
+  keyProperty赋值的对象的属性名称
+  -->
+  <insert id="insert" parameterType="com.mr.entity.GoodsRedis"   useGeneratedKeys="true" keyProperty="goodsId" >
+    insert into goods_redis (goods_name, goods_price, 
+      goods_count, goods_date, goods_type_id
+      )
+    values (#{goodsName,jdbcType=VARCHAR}, #{goodsPrice,jdbcType=INTEGER}, 
+      #{goodsCount,jdbcType=INTEGER}, #{goodsDate,jdbcType=DATE}, #{goodsTypeId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mr.entity.GoodsRedis" >
+    insert into goods_redis
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="goodsName != null" >
+        goods_name,
+      </if>
+      <if test="goodsPrice != null" >
+        goods_price,
+      </if>
+      <if test="goodsCount != null" >
+        goods_count,
+      </if>
+      <if test="goodsDate != null" >
+        goods_date,
+      </if>
+      <if test="goodsTypeId != null" >
+        goods_type_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsName != null" >
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPrice != null" >
+        #{goodsPrice,jdbcType=INTEGER},
+      </if>
+      <if test="goodsCount != null" >
+        #{goodsCount,jdbcType=INTEGER},
+      </if>
+      <if test="goodsDate != null" >
+        #{goodsDate,jdbcType=DATE},
+      </if>
+      <if test="goodsTypeId != null" >
+        #{goodsTypeId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mr.entity.GoodsRedis" >
+    update goods_redis
+    <set >
+      <if test="goodsName != null" >
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPrice != null" >
+        goods_price = #{goodsPrice,jdbcType=INTEGER},
+      </if>
+      <if test="goodsCount != null" >
+        goods_count = #{goodsCount,jdbcType=INTEGER},
+      </if>
+      <if test="goodsDate != null" >
+        goods_date = #{goodsDate,jdbcType=DATE},
+      </if>
+      <if test="goodsTypeId != null" >
+        goods_type_id = #{goodsTypeId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mr.entity.GoodsRedis" >
+    update goods_redis
+    set goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_price = #{goodsPrice,jdbcType=INTEGER},
+      goods_count = #{goodsCount,jdbcType=INTEGER},
+      goods_date = #{goodsDate,jdbcType=DATE},
+      goods_type_id = #{goodsTypeId,jdbcType=INTEGER}
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </update>
+</mapper>
